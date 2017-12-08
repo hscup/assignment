@@ -1,12 +1,8 @@
-import math
-
-
 def norm(vec):
     sum_of_squares = 0.0
     for x in vec:
         sum_of_squares += vec[x] * vec[x]
-    return math.sqrt(sum_of_squares)
-
+    return sum_of_squares**0.5
 
 def cosine_similarity(vec1, vec2):
     numerator = 0
@@ -17,26 +13,9 @@ def cosine_similarity(vec1, vec2):
     denominator = norm(vec1) * norm(vec2)
     return numerator / denominator
 
-
 def build_semantic_descriptors(sentences):
-    """
-    Given a list of list of strings representing sentences, return a
-    dictionary with semantic descriptors of each word.
-    The semantic descriptor represents how many times the subject word and
-    the other word appear in the same sentence as
-    each other.
-
-    Param:
-        -sentences:  a list of list of strings, where the lists group together the words from that sentence.
-    Return
-        a dictionary with each word that appears in sentences as keys. The value is another dictionary with words as keys and values as the number of times the first and second keys appear in the same sentence
-    """
-
     dictionary_count = {}
-
-    # Make a list that contains all of the words.
     for sentence in sentences:
-        # convert all sentences to a set.
         sentence = set(sentence)
         for word in sentence:
             if word not in dictionary_count:
@@ -49,7 +28,6 @@ def build_semantic_descriptors(sentences):
                         dictionary_count[word][other_word] = 1
 
     return dictionary_count
-
 
 def build_semantic_descriptors_from_files(filenames):
     text = ''
@@ -65,7 +43,6 @@ def build_semantic_descriptors_from_files(filenames):
         sentences.append(sentence.lower().split())
 
     return build_semantic_descriptors(sentences)
-
 
 def most_similar_word(word, choices, semantic_descriptors, similarity_fn):
     if word not in semantic_descriptors:
@@ -85,7 +62,6 @@ def most_similar_word(word, choices, semantic_descriptors, similarity_fn):
                 best = i
     return best
 
-
 def run_similarity_test(filename, semantic_descriptors, similarity_fn):
     sentences = open(filename, "r", encoding="utf-8").read().split("\n")
     counter = 0
@@ -98,7 +74,6 @@ def run_similarity_test(filename, semantic_descriptors, similarity_fn):
             counter += 1
     percentage = (counter / len(sentences)) * 100
     return round(percentage, 2)
-
 
 if __name__ == '__main__':
     import time
